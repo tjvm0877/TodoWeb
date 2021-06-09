@@ -50,6 +50,16 @@ eval("\n\nvar isOldIE = function isOldIE() {\n  var memo;\n  return function mem
 
 /***/ }),
 
+/***/ "./src/data-manager.js":
+/*!*****************************!*\
+  !*** ./src/data-manager.js ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"saveData\": () => (/* binding */ saveData),\n/* harmony export */   \"loadData\": () => (/* binding */ loadData)\n/* harmony export */ });\nfunction saveData(data) {\n  console.log('todos:', data);\n  localStorage.setItem('data', JSON.stringify(data));\n}\n\nfunction loadData() {\n  return JSON.parse(localStorage.getItem('data') || '[]');\n}\n\n\n\n\n//# sourceURL=webpack://todo-app/./src/data-manager.js?");
+
+/***/ }),
+
 /***/ "./src/form-input.js":
 /*!***************************!*\
   !*** ./src/form-input.js ***!
@@ -66,7 +76,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"render\": () => (/* binding */ render)\n/* harmony export */ });\nconst $result = document.querySelector('#result');\nfunction render(data) {\n  const html = data.map((todo, index) => {\n    return `<li data-index=\"${index}\"${todo.isDone ? 'class=\"checked\"' : ''} >\n      <button class=\"delete\">×</button>\n      <input type=\"checkbox\" class=\"toggle-checked\" ${\n        todo.isDone ? 'checked' : ''\n      } />\n      <span class=\"text\">${todo.text}</span>\n    </li>`;\n  });\n\n  $result.innerHTML = `<ul>${html.join('')}</ul>`;\n}\n\n\n\n\n//# sourceURL=webpack://todo-app/./src/html-render.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"render\": () => (/* binding */ render)\n/* harmony export */ });\n/* harmony import */ var _data_manager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./data-manager */ \"./src/data-manager.js\");\n\n\nconst $result = document.querySelector('#result');\n\nfunction render(data) {\n  (0,_data_manager__WEBPACK_IMPORTED_MODULE_0__.saveData)(data);\n  const html = data.map((todo, index) => {\n    return `<li data-index=\"${index}\"${todo.isDone ? 'class=\"checked\"' : ''} >\n      <button class=\"delete\">×</button>\n      <input type=\"checkbox\" class=\"toggle-checked\" ${\n        todo.isDone ? 'checked' : ''\n      } />\n      <span class=\"text\">${todo.text}</span>\n    </li>`;\n  });\n\n  $result.innerHTML = `<ul>${html.join('')}</ul>`;\n}\n\n\n\n\n//# sourceURL=webpack://todo-app/./src/html-render.js?");
 
 /***/ }),
 
@@ -76,7 +86,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \**********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _todos_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./todos.css */ \"./src/todos.css\");\n/* harmony import */ var _html_render__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./html-render */ \"./src/html-render.js\");\n/* harmony import */ var _form_input__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./form-input */ \"./src/form-input.js\");\n\n\n\n\nconst $result = document.querySelector('#result');\n\nconst todos = [\n  {\n    text: 'js공부',\n    isDone: false,\n  },\n];\n\n$result.addEventListener('click', (event) => {\n  const { className } = event.target;\n  console.log(typeof className);\n  if (className === 'delete') {\n    const { index } = event.target.parentElement.dataset;\n    console.log(index);\n    todos.splice(index, 1);\n    (0,_html_render__WEBPACK_IMPORTED_MODULE_1__.render)(todos);\n  } else if (className === 'toggle-checked') {\n    const { index } = event.target.parentElement.dataset;\n    todos[index].isDone = !todos[index].isDone;\n    (0,_html_render__WEBPACK_IMPORTED_MODULE_1__.render)(todos);\n    console.log(todos[index].isDone);\n  }\n});\n\n_form_input__WEBPACK_IMPORTED_MODULE_2__.default.init(todos);\n(0,_html_render__WEBPACK_IMPORTED_MODULE_1__.render)(todos);\n\n\n//# sourceURL=webpack://todo-app/./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _todos_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./todos.css */ \"./src/todos.css\");\n/* harmony import */ var _data_manager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./data-manager */ \"./src/data-manager.js\");\n/* harmony import */ var _html_render__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./html-render */ \"./src/html-render.js\");\n/* harmony import */ var _form_input__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./form-input */ \"./src/form-input.js\");\n\n\n\n\n\nconst $result = document.querySelector('#result');\n\nconst todos = (0,_data_manager__WEBPACK_IMPORTED_MODULE_1__.loadData)();\n\n$result.addEventListener('click', (event) => {\n  const { className } = event.target;\n\n  if (className === 'delete') {\n    const { index } = event.target.parentElement.dataset;\n    todos.splice(index, 1);\n    (0,_html_render__WEBPACK_IMPORTED_MODULE_2__.render)(todos);\n  } else if (className === 'toggle-checked') {\n    const { index } = event.target.parentElement.dataset;\n    todos[index].isDone = !todos[index].isDone;\n    (0,_html_render__WEBPACK_IMPORTED_MODULE_2__.render)(todos);\n  }\n});\n\nconsole.log(todos);\n_form_input__WEBPACK_IMPORTED_MODULE_3__.default.init(todos);\n(0,_html_render__WEBPACK_IMPORTED_MODULE_2__.render)(todos);\n\n\n//# sourceURL=webpack://todo-app/./src/index.js?");
 
 /***/ }),
 
